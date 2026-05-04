@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APEX Marketing — Crecimiento que se mide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ─── RESET & ROOT ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #080808;
+      --ink-warm:   #0E0C0B;
+      --surface:    #141210;
+      --raised:     #1C1917;
+      --border:     rgba(255,255,255,0.07);
+      --border-med: rgba(255,255,255,0.12);
+      --white:      #F8F4F0;
+      --white-dim:  rgba(248,244,240,0.55);
+      --white-faint:rgba(248,244,240,0.1);
+      --muted:      #6B6560;
+      --accent:     #F04E23;
+      --accent-hi:  #FF7A45;
+      --accent-glow:rgba(240,78,35,0.22);
+      --green:      #22C55E;
+      --gold:       #F59E0B;
+      --ff-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --ff-body:    'DM Sans', system-ui, sans-serif;
+      --ff-mono:    'JetBrains Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff-body);
+      background: var(--ink);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── NOISE OVERLAY ────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9990;
+    }
+
+    /* ─── NAV ──────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 5%;
+      background: rgba(8,8,8,0.8);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.4s ease;
+    }
+
+    .logo {
+      font-family: var(--ff-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .logo-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-left: 1px;
+      margin-bottom: 4px;
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes logoPulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--ff-body);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .btn-nav {
+      font-family: var(--ff-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      padding: 0.6rem 1.4rem;
+      border: 1.5px solid var(--accent);
+      border-radius: 3px;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-nav:hover {
+      background: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    /* ─── HERO ─────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      column-gap: clamp(2rem, 4vw, 3.5rem);
+      row-gap: 2.5rem;
+      padding: 9rem 5% 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-ghost {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-40%, -50%);
+      font-family: var(--ff-display);
+      font-size: clamp(14rem, 28vw, 24rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.03);
+      pointer-events: none;
+      white-space: nowrap;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .hero-radial {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 70% at 65% 45%, rgba(240,78,35,0.1) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 15% 75%, rgba(240,78,35,0.05) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      max-width: 620px;
+      width: 100%;
+      justify-self: start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .eyebrow-line {
+      width: 28px; height: 1px;
+      background: var(--accent);
+    }
+
+    .eyebrow-text {
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--ff-display);
+      font-size: clamp(2.75rem, 5.2vw + 0.5rem, 5.25rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.75rem;
+      color: var(--white);
+      text-wrap: balance;
+    }
+
+    .h1-inner {
+      display: block;
+      animation: slideUp 0.85s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(1.25rem); opacity: 0; }
+      to   { transform: none; opacity: 1; }
+    }
+
+    .h1-accent {
+      color: var(--accent);
+      display: inline;
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--white-dim);
+      line-height: 1.75;
+      max-width: 500px;
+      margin-bottom: 2.75rem;
+      font-weight: 300;
+      animation: fadeIn 1s 0.4s both;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      animation: fadeIn 1s 0.55s both;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2rem;
+      background: var(--accent);
+      color: var(--white);
+      font-family: var(--ff-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hi);
+      box-shadow: 0 8px 28px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2rem;
+      background: transparent;
+      color: var(--white-dim);
+      font-family: var(--ff-body);
+      font-size: 0.9rem;
+      font-weight: 400;
+      text-decoration: none;
+      border: 1px solid var(--border-med);
+      border-radius: 3px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      color: var(--white);
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .btn-arrow {
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+
+    .btn-primary:hover .btn-arrow { transform: translateX(4px); }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 5%;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .scroll-indicator::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--muted);
+      animation: extendLine 2s ease-in-out infinite;
+    }
+
+    @keyframes extendLine {
+      0%,100% { width: 20px; opacity: 0.4; }
+      50% { width: 50px; opacity: 1; }
+    }
+
+    /* ─── HERO VISUAL ──────────────────────────────────── */
+    .hero-visual {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: center;
+      width: 100%;
+      max-width: 480px;
+      justify-self: center;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1.1s 0.6s both;
+    }
+
+    .dash-card {
+      width: 100%;
+      background: rgba(20,18,16,0.9);
+      border: 1px solid var(--border-med);
+      border-radius: 16px;
+      padding: 1.75rem;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.04),
+        0 30px 70px rgba(0,0,0,0.6),
+        0 0 60px rgba(240,78,35,0.06);
+      animation: floatCard 6s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      0%,100% { transform: translateY(0) rotate(0.5deg); }
+      50%      { transform: translateY(-12px) rotate(-0.5deg); }
+    }
+
+    .dash-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.4rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dash-dots {
+      display: flex;
+      gap: 5px;
+    }
+
+    .dash-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+    }
+
+    .dd-red   { background: #ff5f57; }
+    .dd-yellow{ background: #febc2e; }
+    .dd-green { background: #28c840; }
+
+    .dash-label-top {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    .dash-live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 5px; height: 5px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: livePulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes livePulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .dash-kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .dash-kpi {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 0.7rem;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .dash-kpi:hover {
+      border-color: rgba(240,78,35,0.3);
+      background: rgba(240,78,35,0.04);
+    }
+
+    .kpi-val {
+      font-family: var(--ff-body);
+      font-size: 1.125rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    .kpi-val.orange { color: var(--accent-hi); }
+    .kpi-val.green  { color: var(--green); }
+    .kpi-val.white  { color: var(--white); }
+
+    .kpi-lbl {
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-family: var(--ff-mono);
+    }
+
+    .chart-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 0.9rem 0.55rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .chart-title {
+      font-family: var(--ff-mono);
+      font-size: 0.62rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 0.7rem;
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 60px;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 3px 3px 0 0;
+      background: rgba(240,78,35,0.18);
+      transition: background 0.2s;
+    }
+
+    .bar:hover { background: rgba(240,78,35,0.4); }
+    .bar.hi { background: var(--accent); }
+
+    .bar-lbls {
+      display: flex;
+      gap: 4px;
+      margin-top: 0.3rem;
+    }
+
+    .bar-lbl {
+      flex: 1;
+      text-align: center;
+      font-family: var(--ff-mono);
+      font-size: 0.55rem;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .mini-row {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .mini-stat {
+      flex: 1;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+
+    .mini-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .mini-name {
+      font-family: var(--ff-mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+    }
+
+    .mini-badge {
+      font-family: var(--ff-mono);
+      font-size: 0.58rem;
+      font-weight: 600;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    .mb-up   { background: rgba(34,197,94,0.12); color: var(--green); }
+    .mb-down { background: rgba(240,78,35,0.12); color: var(--accent-hi); }
+
+    .mini-val {
+      font-family: var(--ff-body);
+      font-size: 1.125rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.15;
+    }
+
+    .sparks {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 20px;
+      margin-top: 0.35rem;
+    }
+
+    .sp {
+      flex: 1;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.07);
+    }
+
+    .sp.g { background: rgba(34,197,94,0.4); }
+    .sp.o { background: rgba(240,78,35,0.35); }
+
+    @media (max-width: 960px) {
+      #hero { grid-template-columns: 1fr; }
+      .hero-content { grid-column: 1; }
+      .hero-visual { display: none; }
+    }
+
+    /* ─── TICKER ───────────────────────────────────────── */
+    .ticker-wrap {
+      background: var(--accent);
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .ticker-stamp {
+      background: var(--ink);
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+      font-family: var(--ff-display);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border-right: 2px solid rgba(240,78,35,0.5);
+      white-space: nowrap;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker 30s linear infinite;
+      padding: 0.8rem 0;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--ff-display);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: rgba(255,255,255,0.9);
+      padding: 0 2rem;
+    }
+
+    .tick-sep {
+      width: 4px; height: 4px;
+      background: rgba(255,255,255,0.4);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── SECTIONS ─────────────────────────────────────── */
+    section { padding: 7rem 5%; }
+
+    .sec-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .sec-eyebrow-line {
+      width: 24px; height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .sec-eyebrow-text {
+      font-family: var(--ff-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .sec-title {
+      font-family: var(--ff-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--white);
+    }
+
+    .sec-sub {
+      color: var(--white-dim);
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-top: 1.1rem;
+      max-width: 520px;
+      font-weight: 300;
+    }
+
+    /* ─── METRICS ──────────────────────────────────────── */
+    #metrics {
+      background: var(--ink-warm);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metrics-intro { margin-bottom: 4rem; }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .metric-cell {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .metric-cell:hover { background: rgba(240,78,35,0.04); }
+
+    .metric-cell:nth-child(3n) { border-right: none; }
+    .metric-cell:nth-last-child(-n+3) { border-bottom: none; }
+
+    .metric-cell::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .metric-cell:hover::after { transform: scaleX(1); }
+
+    .metric-num {
+      font-family: var(--ff-body);
+      font-size: clamp(2.8rem, 5vw, 4rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .metric-num .accent {
+      color: var(--accent);
+      font-size: 1em;
+      font-weight: inherit;
+    }
+
+    .metric-desc {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    /* ─── CLIENTS ──────────────────────────────────────── */
+    #clients {
+      padding: 4.5rem 5%;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .clients-header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .clients-header-text {
+      font-family: var(--ff-mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .clients-header-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .clients-logos {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem 0;
+    }
+
+    .client-name {
+      font-family: var(--ff-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(248,244,240,0.12);
+      letter-spacing: 0.04em;
+      cursor: default;
+      transition: color 0.3s, letter-spacing 0.3s;
+    }
+
+    .client-name:hover {
+      color: rgba(248,244,240,0.45);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── SERVICES ─────────────────────────────────────── */
+    #services { background: var(--surface); }
+
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .services-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      align-items: start;
+      gap: 2rem;
+      padding: 2.25rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background 0.3s;
+      cursor: default;
+    }
+
+    .service-row:hover { background: rgba(240,78,35,0.03); }
+
+    .service-row:hover .service-num { color: var(--accent); }
+
+    .service-num {
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      padding-top: 0.3rem;
+      transition: color 0.3s;
+    }
+
+    .service-body {}
+
+    .service-name {
+      font-family: var(--ff-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+
+    .service-desc {
+      color: var(--white-dim);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 520px;
+    }
+
+    .service-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .pill {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+      border-radius: 3px;
+    }
+
+    .service-icon-wrap {
+      width: 48px; height: 48px;
+      border-radius: 10px;
+      background: rgba(240,78,35,0.08);
+      border: 1px solid rgba(240,78,35,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+      transition: background 0.3s, border-color 0.3s;
+    }
+
+    .service-row:hover .service-icon-wrap {
+      background: rgba(240,78,35,0.14);
+      border-color: rgba(240,78,35,0.35);
+    }
+
+    /* ─── CASES ────────────────────────────────────────── */
+    #cases { background: var(--ink); }
+
+    .cases-header { margin-bottom: 3.5rem; }
+
+    .cases-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .case-card {
+      background: var(--ink);
+      padding: 3rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .case-card:hover { background: rgba(20,18,16,0.8); }
+
+    .case-card.span2 { grid-column: span 2; }
+
+    .case-card::before {
+      content: attr(data-idx);
+      position: absolute;
+      top: 2rem; right: 2rem;
+      font-family: var(--ff-display);
+      font-size: 5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.03);
+      line-height: 1;
+    }
+
+    .case-tag {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .case-title {
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.85rem;
+      line-height: 1.2;
+    }
+
+    .case-desc {
+      color: var(--white-dim);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      max-width: 460px;
+    }
+
+    .case-stats {
+      display: flex;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .case-stat-val {
+      font-family: var(--ff-body);
+      font-size: 2.2rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .case-stat-val .acc {
+      color: var(--accent);
+      font-size: 1em;
+      font-weight: inherit;
+    }
+
+    .case-stat-lbl {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      font-weight: 300;
+    }
+
+    /* ─── PROCESS ──────────────────────────────────────── */
+    #process {
+      background: var(--ink-warm);
+      border-top: 1px solid var(--border);
+    }
+
+    .process-header { margin-bottom: 4.5rem; }
+
+    .process-list {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .process-list::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 28px;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      opacity: 0.25;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      position: relative;
+    }
+
+    .process-item + .process-item { border-top: 1px solid var(--border); }
+
+    .process-idx {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.2rem;
+    }
+
+    .process-bubble {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--accent);
+      background: rgba(240,78,35,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .process-body {}
+
+    .process-title {
+      font-family: var(--ff-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      padding-top: 0.4rem;
+    }
+
+    .process-desc {
+      color: var(--white-dim);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ─── TESTIMONIALS ─────────────────────────────────── */
+    #testimonials { background: var(--surface); }
+
+    .testi-header { margin-bottom: 3.5rem; }
+
+    .testi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .testi-card {
+      background: var(--surface);
+      padding: 2.75rem;
+      transition: background 0.3s;
+      position: relative;
+    }
+
+    .testi-card:hover { background: var(--raised); }
+
+    .testi-quote-mark {
+      font-family: Georgia, serif;
+      font-size: 5rem;
+      line-height: 0.7;
+      color: rgba(240,78,35,0.15);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 1.25rem;
+    }
+
+    .star { color: var(--gold); font-size: 0.85rem; }
+
+    .testi-text {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: rgba(248,244,240,0.8);
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 2rem;
+    }
+
+    .testi-person {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .testi-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hi));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-display);
+      font-size: 0.8rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .testi-name {
+      font-family: var(--ff-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .testi-role {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+      font-weight: 300;
+    }
+
+    /* ─── CTA ──────────────────────────────────────────── */
+    #cta {
+      background: var(--accent);
+      padding: 7rem 5%;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cta-ghost {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-display);
+      font-size: clamp(10rem, 22vw, 20rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: rgba(0,0,0,0.08);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .cta-inner { position: relative; z-index: 1; }
+
+    .cta-label {
+      font-family: var(--ff-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-title {
+      font-family: var(--ff-display);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-sub {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: var(--white);
+      color: var(--accent);
+      font-family: var(--ff-display);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .btn-cta-white:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.25);
+    }
+
+    .btn-cta-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 1rem 2.2rem;
+      background: transparent;
+      color: var(--white);
+      font-family: var(--ff-body);
+      font-size: 0.95rem;
+      font-weight: 400;
+      text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.45);
+      border-radius: 3px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .btn-cta-ghost:hover {
+      border-color: white;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ─── FOOTER ───────────────────────────────────────── */
+    footer {
+      background: #050404;
+      padding: 5rem 5% 2.5rem;
+      border-top: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer-ghost {
+      position: absolute;
+      bottom: -2rem; right: -1rem;
+      font-family: var(--ff-display);
+      font-size: 10rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.025);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .footer-brand {}
+
+    .footer-logo {
+      font-family: var(--ff-display);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .footer-tagline {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 260px;
+    }
+
+    .footer-col {}
+
+    .footer-col-head {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-col ul { list-style: none; }
+
+    .footer-col li + li { margin-top: 0.7rem; }
+
+    .footer-col a {
+      color: rgba(248,244,240,0.35);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 300;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--white); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .footer-copy {
+      font-family: var(--ff-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .soc-link {
+      width: 34px; height: 34px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--ff-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .soc-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(240,78,35,0.06);
+    }
+
+    /* ─── SCROLL REVEAL ────────────────────────────────── */
+    .sr {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .sr.sr-left {
+      transform: translateX(-30px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    .sr.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .sr-d1 { transition-delay: 0.1s; }
+    .sr-d2 { transition-delay: 0.2s; }
+    .sr-d3 { transition-delay: 0.3s; }
+    .sr-d4 { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .testi-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 5%; }
+      .nav-links { display: none; }
+      .cases-grid { grid-template-columns: 1fr; }
+      .case-card.span2 { grid-column: span 1; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+      .service-row { grid-template-columns: 50px 1fr; }
+      .service-icon-wrap { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="logo">APEX<span class="logo-dot"></span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Servicios</a></li>
+      <li><a href="#cases">Casos</a></li>
+      <li><a href="#process">Proceso</a></li>
+      <li><a href="#testimonials">Clientes</a></li>
+    </ul>
+    <a href="#cta" class="btn-nav">Hablar con nosotros</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-radial"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-ghost">APEX</div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="eyebrow-line"></span>
+        <span class="eyebrow-text">Agencia #1 en crecimiento B2B — 2024</span>
+      </div>
+      <h1>
+        <span class="h1-inner">Marketing que mueve el <span class="h1-accent">revenue.</span></span>
+      </h1>
+      <p class="hero-sub">
+        Diseñamos estrategias de marketing basadas en datos que convierten audiencias en clientes. Sin humo, sin promesas vacías — solo resultados medibles.
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary">Quiero crecer <span class="btn-arrow">→</span></a>
+        <a href="#cases" class="btn-secondary">Ver casos de éxito</a>
+      </div>
+    </div>
+
+    <!-- Dashboard visual -->
+    <div class="hero-visual">
+      <div class="dash-card">
+        <div class="dash-topbar">
+          <div class="dash-dots">
+            <div class="dash-dot dd-red"></div>
+            <div class="dash-dot dd-yellow"></div>
+            <div class="dash-dot dd-green"></div>
+          </div>
+          <span class="dash-label-top">campaign_overview.dash</span>
+          <div class="dash-live-badge"><span class="live-dot"></span>Live</div>
+        </div>
+
+        <div class="dash-kpis">
+          <div class="dash-kpi">
+            <div class="kpi-val orange">340%</div>
+            <div class="kpi-lbl">ROI</div>
+          </div>
+          <div class="dash-kpi">
+            <div class="kpi-val green">4.8x</div>
+            <div class="kpi-lbl">ROAS</div>
+          </div>
+          <div class="dash-kpi">
+            <div class="kpi-val white">$85M</div>
+            <div class="kpi-lbl">Revenue</div>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <div class="chart-title">Leads generados — últimas 8 semanas</div>
+          <div class="bars">
+            <div class="bar" style="height:38%"></div>
+            <div class="bar" style="height:52%"></div>
+            <div class="bar" style="height:44%"></div>
+            <div class="bar" style="height:66%"></div>
+            <div class="bar" style="height:58%"></div>
+            <div class="bar" style="height:79%"></div>
+            <div class="bar" style="height:71%"></div>
+            <div class="bar hi" style="height:100%"></div>
+          </div>
+          <div class="bar-lbls">
+            <span class="bar-lbl">S1</span><span class="bar-lbl">S2</span>
+            <span class="bar-lbl">S3</span><span class="bar-lbl">S4</span>
+            <span class="bar-lbl">S5</span><span class="bar-lbl">S6</span>
+            <span class="bar-lbl">S7</span><span class="bar-lbl">S8</span>
+          </div>
+        </div>
+
+        <div class="mini-row">
+          <div class="mini-stat">
+            <div class="mini-top">
+              <span class="mini-name">Conv. Rate</span>
+              <span class="mini-badge mb-up">+22%</span>
+            </div>
+            <div class="mini-val" style="color:var(--green)">4.8%</div>
+            <div class="sparks">
+              <div class="sp g" style="height:40%"></div><div class="sp g" style="height:55%"></div>
+              <div class="sp g" style="height:50%"></div><div class="sp g" style="height:70%"></div>
+              <div class="sp g" style="height:65%"></div><div class="sp g" style="height:85%"></div>
+              <div class="sp g" style="height:100%"></div>
+            </div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-top">
+              <span class="mini-name">CAC</span>
+              <span class="mini-badge mb-down">-41%</span>
+            </div>
+            <div class="mini-val" style="color:var(--accent-hi)">$18</div>
+            <div class="sparks">
+              <div class="sp o" style="height:100%"></div><div class="sp o" style="height:85%"></div>
+              <div class="sp o" style="height:75%"></div><div class="sp o" style="height:60%"></div>
+              <div class="sp o" style="height:50%"></div><div class="sp o" style="height:42%"></div>
+              <div class="sp o" style="height:32%"></div>
+            </div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-top">
+              <span class="mini-name">Clientes</span>
+              <span class="mini-badge mb-up">+12</span>
+            </div>
+            <div class="mini-val">200+</div>
+            <div class="sparks">
+              <div class="sp" style="height:30%"></div><div class="sp" style="height:40%"></div>
+              <div class="sp" style="height:52%"></div><div class="sp" style="height:63%"></div>
+              <div class="sp" style="height:75%"></div><div class="sp" style="height:88%"></div>
+              <div class="sp" style="height:100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">Scroll</div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-stamp">APEX</div>
+    <div class="ticker-track">
+      <span class="ticker-item">+340% ROI promedio<span class="tick-sep"></span></span>
+      <span class="ticker-item">200+ clientes activos<span class="tick-sep"></span></span>
+      <span class="ticker-item">$85M en revenue generado<span class="tick-sep"></span></span>
+      <span class="ticker-item">12 años de experiencia<span class="tick-sep"></span></span>
+      <span class="ticker-item">98% retención de clientes<span class="tick-sep"></span></span>
+      <span class="ticker-item">40 países alcanzados<span class="tick-sep"></span></span>
+      <span class="ticker-item">+340% ROI promedio<span class="tick-sep"></span></span>
+      <span class="ticker-item">200+ clientes activos<span class="tick-sep"></span></span>
+      <span class="ticker-item">$85M en revenue generado<span class="tick-sep"></span></span>
+      <span class="ticker-item">12 años de experiencia<span class="tick-sep"></span></span>
+      <span class="ticker-item">98% retención de clientes<span class="tick-sep"></span></span>
+      <span class="ticker-item">40 países alcanzados<span class="tick-sep"></span></span>
+    </div>
+  </div>
+
+  <!-- METRICS -->
+  <section id="metrics">
+    <div class="metrics-intro sr">
+      <div class="sec-eyebrow">
+        <span class="sec-eyebrow-line"></span>
+        <span class="sec-eyebrow-text">Resultados comprobados</span>
+      </div>
+      <h2 class="sec-title">Números que no mienten</h2>
+      <p class="sec-sub">Cada dato está auditado, respaldado por contratos y verificable por nuestros clientes.</p>
+    </div>
+    <div class="metrics-grid sr">
+      <div class="metric-cell">
+        <div class="metric-num counter" data-target="340" data-suffix="%">340<span class="accent">%</span></div>
+        <div class="metric-desc">ROI promedio por cliente</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">$85<span class="accent">M</span></div>
+        <div class="metric-desc">Revenue generado en 2024</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num counter" data-target="200" data-suffix="+">200<span class="accent">+</span></div>
+        <div class="metric-desc">Clientes activos globales</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num counter" data-target="98" data-suffix="%">98<span class="accent">%</span></div>
+        <div class="metric-desc">Tasa de retención anual</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">4.2<span class="accent">x</span></div>
+        <div class="metric-desc">Incremento promedio en leads</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-num">72<span class="accent">h</span></div>
+        <div class="metric-desc">Para los primeros resultados</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section id="clients">
+    <div class="clients-header">
+      <span class="clients-header-text">Confían en nosotros</span>
+      <div class="clients-header-line"></div>
+    </div>
+    <div class="clients-logos sr">
+      <span class="client-name">NOVATEL</span>
+      <span class="client-name">Primerix</span>
+      <span class="client-name">ATLAS CO.</span>
+      <span class="client-name">Vortex Labs</span>
+      <span class="client-name">MERIDIAN</span>
+      <span class="client-name">QuantumPay</span>
+      <span class="client-name">SOLARIS</span>
+      <span class="client-name">Clearnode</span>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-header sr">
+      <div>
+        <div class="sec-eyebrow">
+          <span class="sec-eyebrow-line"></span>
+          <span class="sec-eyebrow-text">Servicios</span>
+        </div>
+        <h2 class="sec-title">Todo lo que necesitas<br>para dominar tu mercado.</h2>
+      </div>
+      <a href="#cta" class="btn-secondary">Ver todos →</a>
+    </div>
+    <div class="services-list">
+      <div class="service-row sr sr-d1">
+        <span class="service-num">01</span>
+        <div class="service-body">
+          <div class="service-name">Performance Marketing</div>
+          <div class="service-desc">Campañas de pago altamente optimizadas en Google, Meta, LinkedIn y TikTok. Cada centavo justificado con datos.</div>
+          <div class="service-pills">
+            <span class="pill">Google Ads</span><span class="pill">Meta Ads</span><span class="pill">A/B Testing</span><span class="pill">CRO</span>
+          </div>
+        </div>
+        <div class="service-icon-wrap">⚡</div>
+      </div>
+      <div class="service-row sr sr-d2">
+        <span class="service-num">02</span>
+        <div class="service-body">
+          <div class="service-name">SEO & Contenidos</div>
+          <div class="service-desc">Estrategia orgánica de largo plazo que posiciona tu marca como autoridad y atrae leads calificados de forma sostenida.</div>
+          <div class="service-pills">
+            <span class="pill">SEO Técnico</span><span class="pill">Link Building</span><span class="pill">Content Strategy</span>
+          </div>
+        </div>
+        <div class="service-icon-wrap">🎯</div>
+      </div>
+      <div class="service-row sr sr-d1">
+        <span class="service-num">03</span>
+        <div class="service-body">
+          <div class="service-name">Marketing Automation</div>
+          <div class="service-desc">Flujos de nurturing que convierten prospectos fríos en clientes listos para comprar, sin intervención manual.</div>
+          <div class="service-pills">
+            <span class="pill">HubSpot</span><span class="pill">Email</span><span class="pill">Lead Scoring</span>
+          </div>
+        </div>
+        <div class="service-icon-wrap">🔁</div>
+      </div>
+      <div class="service-row sr sr-d2">
+        <span class="service-num">04</span>
+        <div class="service-body">
+          <div class="service-name">Analytics & Data</div>
+          <div class="service-desc">Dashboards en tiempo real, atribución multi-touch y reporting ejecutivo para que tomes decisiones con certeza.</div>
+          <div class="service-pills">
+            <span class="pill">GA4</span><span class="pill">Looker Studio</span><span class="pill">SQL</span>
+          </div>
+        </div>
+        <div class="service-icon-wrap">📊</div>
+      </div>
+      <div class="service-row sr sr-d1">
+        <span class="service-num">05</span>
+        <div class="service-body">
+          <div class="service-name">Brand & Creative</div>
+          <div class="service-desc">Identidad de marca, diseño de campañas y producción creativa que conecta emocionalmente y genera recall.</div>
+          <div class="service-pills">
+            <span class="pill">Branding</span><span class="pill">Diseño</span><span class="pill">Video</span>
+          </div>
+        </div>
+        <div class="service-icon-wrap">🌐</div>
+      </div>
+      <div class="service-row sr sr-d2">
+        <span class="service-num">06</span>
+        <div class="service-body">
+          <div class="service-name">Estrategia GTM</div>
+          <div class="service-desc">Definimos tu go-to-market desde cero: ICP, canales, messaging y proyecciones de crecimiento escalables.</div>
+          <div class="service-pills">
+            <span class="pill">ICP</span><span class="pill">Positioning</span><span class="pill">Growth</span>
+          </div>
+        </div>
+        <div class="service-icon-wrap">🤝</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASES -->
+  <section id="cases">
+    <div class="cases-header sr">
+      <div class="sec-eyebrow">
+        <span class="sec-eyebrow-line"></span>
+        <span class="sec-eyebrow-text">Casos de éxito</span>
+      </div>
+      <h2 class="sec-title">De la estrategia al resultado.</h2>
+      <p class="sec-sub">Resultados reales de empresas reales. Sin casos genéricos.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card span2 sr" data-idx="01">
+        <div class="case-tag">SaaS B2B · Fintech</div>
+        <h3 class="case-title">Novatel triplicó sus demos<br>calificadas en 6 meses</h3>
+        <p class="case-desc">Rediseñamos su estrategia de paid media y automatización de nurturing, pasando de 40 demos/mes a más de 130 con el mismo presupuesto.</p>
+        <div class="case-stats">
+          <div>
+            <div class="case-stat-val">3.2<span class="acc">x</span></div>
+            <div class="case-stat-lbl">Más demos calificadas</div>
+          </div>
+          <div>
+            <div class="case-stat-val">-41<span class="acc">%</span></div>
+            <div class="case-stat-lbl">Reducción en CAC</div>
+          </div>
+          <div>
+            <div class="case-stat-val">$2.4<span class="acc">M</span></div>
+            <div class="case-stat-lbl">Pipeline generado</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-card sr sr-d1" data-idx="02">
+        <div class="case-tag">E-commerce · Retail</div>
+        <h3 class="case-title">Primerix: de 1% a 4.8% de conversión</h3>
+        <p class="case-desc">Programa de CRO y rediseño del funnel completo que multiplicó su tasa de conversión en menos de 90 días.</p>
+        <div class="case-stats">
+          <div>
+            <div class="case-stat-val">4.8<span class="acc">x</span></div>
+            <div class="case-stat-lbl">Conversión mejorada</div>
+          </div>
+          <div>
+            <div class="case-stat-val">+280<span class="acc">%</span></div>
+            <div class="case-stat-lbl">Revenue mensual</div>
+          </div>
+        </div>
+      </div>
+      <div class="case-card sr sr-d2" data-idx="03">
+        <div class="case-tag">Servicios B2B · Consultoría</div>
+        <h3 class="case-title">Atlas Co. posicionó 18 keywords en top 3</h3>
+        <p class="case-desc">Estrategia SEO de 12 meses que los convirtió en la referencia del sector y triplicó el tráfico orgánico calificado.</p>
+        <div class="case-stats">
+          <div>
+            <div class="case-stat-val">18</div>
+            <div class="case-stat-lbl">Keywords en top 3</div>
+          </div>
+          <div>
+            <div class="case-stat-val">3<span class="acc">x</span></div>
+            <div class="case-stat-lbl">Tráfico orgánico</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="process-header sr">
+      <div class="sec-eyebrow">
+        <span class="sec-eyebrow-line"></span>
+        <span class="sec-eyebrow-text">Cómo trabajamos</span>
+      </div>
+      <h2 class="sec-title">Sin sorpresas.<br>Solo claridad y ejecución.</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-item sr">
+        <div class="process-idx"><div class="process-bubble">01</div></div>
+        <div class="process-body">
+          <div class="process-title">Diagnóstico</div>
+          <div class="process-desc">Auditamos tu situación actual, competencia y oportunidades reales antes de proponer nada.</div>
+        </div>
+      </div>
+      <div class="process-item sr sr-d1">
+        <div class="process-idx"><div class="process-bubble">02</div></div>
+        <div class="process-body">
+          <div class="process-title">Estrategia</div>
+          <div class="process-desc">Diseñamos un plan a medida con canales, mensajes y métricas de éxito claramente definidas.</div>
+        </div>
+      </div>
+      <div class="process-item sr sr-d2">
+        <div class="process-idx"><div class="process-bubble">03</div></div>
+        <div class="process-body">
+          <div class="process-title">Ejecución</div>
+          <div class="process-desc">Activamos campañas, flujos y contenidos con un equipo senior dedicado a tu cuenta.</div>
+        </div>
+      </div>
+      <div class="process-item sr sr-d1">
+        <div class="process-idx"><div class="process-bubble">04</div></div>
+        <div class="process-body">
+          <div class="process-title">Optimización</div>
+          <div class="process-desc">Iteramos continuamente basándonos en datos, mejorando el rendimiento cada semana.</div>
+        </div>
+      </div>
+      <div class="process-item sr sr-d2">
+        <div class="process-idx"><div class="process-bubble">05</div></div>
+        <div class="process-body">
+          <div class="process-title">Reporte</div>
+          <div class="process-desc">Dashboards en tiempo real y reuniones quincenales para que siempre sepas el estado exacto.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="testi-header sr">
+      <div class="sec-eyebrow">
+        <span class="sec-eyebrow-line"></span>
+        <span class="sec-eyebrow-text">Testimonios</span>
+      </div>
+      <h2 class="sec-title">Lo dicen quienes<br>ya crecieron con nosotros.</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card sr">
+        <span class="testi-quote-mark">"</span>
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">"En 3 meses APEX generó más pipeline del que habíamos logrado en un año internamente. Combinan estrategia de alto nivel con una ejecución impecable."</p>
+        <div class="testi-person">
+          <div class="testi-avatar">CM</div>
+          <div>
+            <div class="testi-name">Carlos Mendoza</div>
+            <div class="testi-role">CEO · Novatel</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card sr sr-d1">
+        <span class="testi-quote-mark">"</span>
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">"No son una agencia más. Son un equipo que realmente entiende el negocio. Antes de proponer cualquier acción, preguntan el porqué. Eso marca la diferencia."</p>
+        <div class="testi-person">
+          <div class="testi-avatar">SR</div>
+          <div>
+            <div class="testi-name">Sofía Ramos</div>
+            <div class="testi-role">CMO · Primerix</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card sr sr-d2">
+        <span class="testi-quote-mark">"</span>
+        <div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">"El ROI que hemos obtenido supera cualquier expectativa. Y lo mejor: cada peso invertido tiene una justificación clara en el reporte semanal."</p>
+        <div class="testi-person">
+          <div class="testi-avatar">AT</div>
+          <div>
+            <div class="testi-name">Andrés Torres</div>
+            <div class="testi-role">Director General · Atlas Co.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta">
+    <div class="cta-ghost">CRECER</div>
+    <div class="cta-inner">
+      <div class="cta-label">¿Siguiente paso?</div>
+      <h2 class="cta-title">¿Listo para crecer<br>de verdad?</h2>
+      <p class="cta-sub">Agenda una sesión gratuita de 30 minutos y descubre exactamente qué está frenando tu crecimiento.</p>
+      <div class="cta-actions">
+        <a href="mailto:hola@apexmarketing.co" class="btn-cta-white">Agendar sesión gratuita →</a>
+        <a href="tel:+1800APEX" class="btn-cta-ghost">Llamar ahora</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-ghost">APEX</div>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">APEX<span style="color:var(--accent)">.</span></a>
+        <p class="footer-tagline">Marketing estratégico que genera crecimiento real y medible para empresas ambiciosas.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Servicios</div>
+        <ul>
+          <li><a href="#">Performance Marketing</a></li>
+          <li><a href="#">SEO & Contenidos</a></li>
+          <li><a href="#">Marketing Automation</a></li>
+          <li><a href="#">Analytics & Data</a></li>
+          <li><a href="#">Brand & Creative</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Empresa</div>
+        <ul>
+          <li><a href="#">Sobre nosotros</a></li>
+          <li><a href="#">Equipo</a></li>
+          <li><a href="#">Casos de éxito</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-head">Contacto</div>
+        <ul>
+          <li><a href="#">hola@apexmarketing.co</a></li>
+          <li><a href="#">+1 800 APEX MKT</div></a></li>
+          <li><a href="#">México · Colombia · España</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 APEX Marketing — Todos los derechos reservados</span>
+      <div class="footer-socials">
+        <a href="#" class="soc-link">in</a>
+        <a href="#" class="soc-link">ig</a>
+        <a href="#" class="soc-link">𝕏</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Nav shrink ── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').style.padding =
+        window.scrollY > 60 ? '0.75rem 5%' : '1.4rem 5%';
+    });
+
+    /* ── Scroll reveal ── */
+    const srEls = document.querySelectorAll('.sr');
+    const srIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); srIO.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    srEls.forEach(el => srIO.observe(el));
+
+    /* ── Counter animation ── */
+    const counters = document.querySelectorAll('.counter');
+    const cIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el    = e.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        const isFloat = String(target).includes('.');
+        const dur = 1600;
+        let t0 = null;
+        const tick = ts => {
+          if (!t0) t0 = ts;
+          const p = Math.min((ts - t0) / dur, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const v = eased * target;
+          el.innerHTML = (isFloat ? v.toFixed(1) : Math.round(v)) + `<span class="accent">${suffix}</span>`;
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        cIO.unobserve(el);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => cIO.observe(c));
+  </script>
+</body>
+</html>
